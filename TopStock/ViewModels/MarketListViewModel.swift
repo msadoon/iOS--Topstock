@@ -2,14 +2,15 @@ import SwiftUI
 
 @Observable
 class MarketListViewModel {
-    var advisors = [Advisor]()
+    var markets = [String]()
     var errorMessage: String?
     
+    @MainActor
     func getMarketsList() async {
         do {
-            let advisorList: [Advisor] = try await Networking.shared.retrieveData(for: .advisors)
+            let _:[Market] = try await Networking().retrieveData(for: .screener, with: .stocksMovers)
             
-            self.advisors = advisorList
+            //self.markets = rawData
         } catch(let error) {
             guard let errorValue = error as? APIError else { return }
             

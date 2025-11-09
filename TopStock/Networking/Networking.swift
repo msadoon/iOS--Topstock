@@ -20,65 +20,52 @@ enum APIError: Error {
     case unknown(APIErrorMessages)
 }
 
-enum AdvisorDashboardAPIEndpoint: String {
-    case baseEndpoint = "https://api.compoundplanning.com/v2"
+enum TopStockAPIEndpoint: String {
+    case baseEndpoint = "https://data.alpaca.markets/v1beta1"
     
-    enum Fragment {
-        case advisors
-        case accounts(String)
-        case ticker(String)
+    enum Fragment: String {
+        case screener = "screener"
         
         enum Description: String {
-            case advisors = "/advisors"
-            case accounts = "/accounts/"
-            case ticker = "/symbol/"
+            case stocksActive = "stocks/most-actives"
+            case stocksMovers = "stocks/movers"
+            case cryptoMovers = "crypto/movers"
         }
     }
 }
 
-protocol AdvisorDashboardAPI {
-    func retrieveData<T: Decodable>(for: AdvisorDashboardAPIEndpoint.Fragment) async throws -> [T] where T: Identifiable
+protocol TopStockAPI {
+    func retrieveData<T: Decodable>(for: TopStockAPIEndpoint.Fragment, with description: TopStockAPIEndpoint.Fragment.Description) async throws -> [T] where T: Identifiable
 }
 
-class Networking: AdvisorDashboardAPI {
-    static let shared = Networking()
-    private var decoder = JSONDecoder()
-    private let cachedAccounts: [Account] = Utilities.shared.loadJson(filename: "Accounts")
-    private let cachedAdvisors: [Advisor] = Utilities.shared.loadJson(filename: "Advisors")
-    private let cachedSecurities: [Security] = Utilities.shared.loadJson(filename: "Securities")
-    /**
-        FIXME: In a production application, think about pagination for three different endpoints. It would be stored and updated within this url below.
-     */
-    private var fragmentURL: (AdvisorDashboardAPIEndpoint.Fragment) -> URL? = { fragment in
-        var baseURL = URLComponents(string: AdvisorDashboardAPIEndpoint.baseEndpoint.rawValue)?.url
+struct Networking: TopStockAPI {
+    private var decoder: JSONDecoder {
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
         
-        var queryItem: URLQueryItem?
+        return decoder
+    }
+    
+    private var fragmentURL: (TopStockAPIEndpoint.Fragment, TopStockAPIEndpoint.Fragment.Description) -> URL? = { fragment, description in
+        var baseURL = URLComponents(string: TopStockAPIEndpoint.baseEndpoint.rawValue)?.url
         
-        switch fragment {
-        case .advisors:
-            queryItem = URLQueryItem(name: AdvisorDashboardAPIEndpoint.Fragment.Description.advisors.rawValue, value: "")
-        case .accounts(let advisorId):
-            queryItem = URLQueryItem(name: AdvisorDashboardAPIEndpoint.Fragment.Description.accounts.rawValue, value: advisorId)
-        case .ticker(let symbol):
-            queryItem = URLQueryItem(name: AdvisorDashboardAPIEndpoint.Fragment.Description.ticker.rawValue, value: symbol)
-        }
-        
-        guard let availableQueryItem = queryItem else {
+        let screenerComponent = URLComponents(string: fragment.rawValue)?.url(relativeTo: baseURL)
+        let moverComponent = URLComponents(string: description.rawValue)?.url(relativeTo: screenerComponent)
+
+        guard let completeURLComponent = moverComponent else {
             return baseURL
         }
         
-        let completeURL = baseURL?.appending(queryItems: [availableQueryItem])
-        
-        return completeURL
+        return completeURLComponent
     }
     
-    func retrieveData<T: Decodable>(for endpoint: AdvisorDashboardAPIEndpoint.Fragment) async throws -> [T] where T: Identifiable {
-        let parameterizedURL: URL? = fragmentURL(endpoint)
+    func retrieveData<T: Decodable>(for endpoint: TopStockAPIEndpoint.Fragment, with description: TopStockAPIEndpoint.Fragment.Description) async throws -> [T] where T: Identifiable {
+        let parameterizedURL: URL? = fragmentURL(endpoint, description)
         
-        guard let _ = parameterizedURL else {
+        guard let validURL = parameterizedURL else {
             throw APIError.urlError(APIError.APIErrorMessages.urlError)
         }
-        /** FIXME: In a real production app - we'd be hitting a network - so handling error states becomes important.
+        
         let (data, urlResponse) = try await URLSession.shared.data(from: validURL)
         
         guard let httpsURLResponse = (urlResponse as? HTTPURLResponse) else {
@@ -90,45 +77,16 @@ class Networking: AdvisorDashboardAPI {
         guard errorState == nil else {
             throw errorState ?? APIError.unknown(APIError.APIErrorMessages.unknown)
         }
-         */
-        /**
-            FIXME: These act as the backend/local cache for the models in the JSON.
-          */
-        switch endpoint {
-        case .advisors:
-            return Utilities.shared.loadJson(filename: "Advisors")
-        case .accounts(let advisorId):
-            guard let advisor: Advisor = self.cachedAdvisors.first(where: { $0.id == advisorId }) else {
-                return []
-            }
-            
-            let uniqueClientIds: Set<String> = Set(advisor.portfolioSummary.map { $0.id })
-            
-            return Utilities.shared.loadJson(filename: "Accounts").filter { account in
-                guard let accountId: String = account.id as? String else {
-                    return false
-                }
-                
-                return uniqueClientIds.contains(accountId)
-            }
-        case .ticker(let symbol):
-            guard let foundSecurity = self.cachedSecurities.first(where: { $0.ticker == symbol }) else {
-                return []
-            }
-            
-            return  Utilities.shared.loadJson(filename: "Securities").filter { security in
-                guard let securityId: String = security.id as? String else {
-                    return false
-                }
-                
-                return foundSecurity.id == securityId
-            }
+        
+        do {
+            let parsedJSON = try self.decoder.decode([T].self, from: data)
+            print(parsedJSON)
+            return parsedJSON
+        } catch(let error) {
+            throw error
         }
     }
     
-    /**
-    FIXME: Real networking would use this for error handling
-     
     private func errorState(in response: HTTPURLResponse) -> APIError? {
         var validError: APIError?
         
@@ -139,7 +97,7 @@ class Networking: AdvisorDashboardAPI {
                 validError = APIError.clientError(APIError.APIErrorMessages.clientError)
             case 401:
                 validError = APIError.authenticationError(APIError.APIErrorMessages.authenticationError)
-            case 404:
+            case 403, 404:
                 validError = APIError.noEndpointError(APIError.APIErrorMessages.noEndpointError)
             case 429:
                 validError = APIError.tooManyRequestsError(APIError.APIErrorMessages.tooManyRequestsError)
@@ -151,5 +109,4 @@ class Networking: AdvisorDashboardAPI {
         
         return validError
     }
-     */
 }

@@ -1,9 +1,7 @@
 import SwiftUI
 
 struct MarketListView: View {
-    /**
-    private var marletListViewModel = MarketListViewModel()
-     */
+    private var marketListViewModel = MarketListViewModel()
     @State var geometry = CGRect.zero
     @State private var showAlert: (flag: Bool, msg: String?) = (false, nil)
     
@@ -56,9 +54,7 @@ struct MarketListView: View {
             }
         }
         .task {
-            /**
-            let _ = await self.marletListViewModel.getAdvsiorList()
-             */
+            let _ = await self.marketListViewModel.getMarketsList()
         }
     }
 }

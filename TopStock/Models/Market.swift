@@ -27,7 +27,7 @@ struct Market: Decodable, Hashable, Identifiable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         self.id = try container.decode(String.self, forKey: .id)
-        self.name = try container.decode(String.self, forKey: .name)
+        self.acronym = try container.decode(String.self, forKey: .name)
         
         var profileURL: URL?
         
@@ -36,7 +36,7 @@ struct Market: Decodable, Hashable, Identifiable {
             profileURL = url
         }
         
-        self.profilePictureUrl = profileURL
+        self.fullName = nil
         self.portfolioSummary = try container.decode([AccountPreview].self, forKey: .accounts)
     }
 }

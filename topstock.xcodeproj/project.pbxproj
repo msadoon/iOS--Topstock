@@ -47,13 +47,34 @@
 			);
 			target = 898C4ED718381982008A7350 /* topstock */;
 		};
+		70818B6A2EC155CA000D2B60 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Networking.swift,
+			);
+			target = 898C4ED718381982008A7350 /* topstock */;
+		};
+		70818B6C2EC158FC000D2B60 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				MarketListViewModel.swift,
+			);
+			target = 898C4ED718381982008A7350 /* topstock */;
+		};
+		70818B6E2EC159ED000D2B60 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Market.swift,
+			);
+			target = 898C4ED718381982008A7350 /* topstock */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		70818B432EC1442B000D2B60 /* Models */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Models; sourceTree = "<group>"; };
-		70818B452EC1442B000D2B60 /* Networking */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Networking; sourceTree = "<group>"; };
+		70818B432EC1442B000D2B60 /* Models */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (70818B6E2EC159ED000D2B60 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Models; sourceTree = "<group>"; };
+		70818B452EC1442B000D2B60 /* Networking */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (70818B6A2EC155CA000D2B60 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Networking; sourceTree = "<group>"; };
 		70818B482EC1442B000D2B60 /* Shared */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (70818B652EC146CA000D2B60 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Shared; sourceTree = "<group>"; };
-		70818B4C2EC1442B000D2B60 /* ViewModels */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ViewModels; sourceTree = "<group>"; };
+		70818B4C2EC1442B000D2B60 /* ViewModels */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (70818B6C2EC158FC000D2B60 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = ViewModels; sourceTree = "<group>"; };
 		70818B542EC1442B000D2B60 /* Views */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (70818B5F2EC14680000D2B60 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Views; sourceTree = "<group>"; };
 		70818B572EC1445E000D2B60 /* TopStockTests */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (70818B672EC147F2000D2B60 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = TopStockTests; sourceTree = "<group>"; };
 		70818B592EC1445E000D2B60 /* TopStockUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (70818B662EC147F0000D2B60 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = TopStockUITests; sourceTree = "<group>"; };
