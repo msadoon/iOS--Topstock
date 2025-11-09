@@ -1,0 +1,158 @@
+[
+  {
+    "id": "c402f1d0-4d66-4a29-95c2-e5a028e456b3",
+    "ticker": "BRGFX",
+    "name": "Bright Rock Growth Fund Class F",
+    "dateAdded": "2007-11-16T12:05:11.984Z",
+    "exchange": "NYSE",
+    "marketSnapshots": [
+      { "period": "7_day", "url": "https://api.example.com/marketdata/BRGFX/snapshot/7_day" },
+      { "period": "6_month", "url": "https://api.example.com/marketdata/BRGFX/snapshot/6_month" },
+      { "period": "1_year", "url": "https://api.example.com/marketdata/BRGFX/snapshot/1_year" }
+    ]
+  },
+  {
+    "id": "1a2b3c4d-1111-2222-3333-444455556666",
+    "ticker": "GRTHX",
+    "name": "Green Growth Equity Fund",
+    "dateAdded": "2015-03-02T09:22:45.000Z",
+    "exchange": "NASDAQ",
+    "marketSnapshots": [
+      { "period": "7_day", "url": "https://api.example.com/marketdata/GRTHX/snapshot/7_day" },
+      { "period": "6_month", "url": "https://api.example.com/marketdata/GRTHX/snapshot/6_month" },
+      { "period": "1_year", "url": "https://api.example.com/marketdata/GRTHX/snapshot/1_year" }
+    ]
+  },
+  {
+    "id": "7f4e0f9b-97b9-4d8a-83d2-6b0b0fc7c87e",
+    "ticker": "TRKFX",
+    "name": "Trackline Growth Opportunities Fund",
+    "dateAdded": "2018-07-19T14:33:20.124Z",
+    "exchange": "NYSE",
+    "marketSnapshots": [
+      { "period": "7_day", "url": "https://api.example.com/marketdata/TRKFX/snapshot/7_day" },
+      { "period": "6_month", "url": "https://api.example.com/marketdata/TRKFX/snapshot/6_month" },
+      { "period": "1_year", "url": "https://api.example.com/marketdata/TRKFX/snapshot/1_year" }
+    ]
+  },
+  {
+    "id": "b093a874-f56e-4ea6-b9e2-12f6c72c0e61",
+    "ticker": "BLUFX",
+    "name": "Blue Horizon Equity Fund",
+    "dateAdded": "2010-01-11T10:15:30.000Z",
+    "exchange": "AMEX",
+    "marketSnapshots": [
+      { "period": "7_day", "url": "https://api.example.com/marketdata/BLUFX/snapshot/7_day" },
+      { "period": "6_month", "url": "https://api.example.com/marketdata/BLUFX/snapshot/6_month" },
+      { "period": "1_year", "url": "https://api.example.com/marketdata/BLUFX/snapshot/1_year" }
+    ]
+  },
+  {
+    "id": "3cb1e7c0-8bbf-4c3e-bf9b-e42d51a3b9f3",
+    "ticker": "RDGFX",
+    "name": "Red Granite Growth Fund",
+    "dateAdded": "2022-09-05T08:47:00.000Z",
+    "exchange": "NASDAQ",
+    "marketSnapshots": [
+      { "period": "7_day", "url": "https://api.example.com/marketdata/RDGFX/snapshot/7_day" },
+      { "period": "6_month", "url": "https://api.example.com/marketdata/RDGFX/snapshot/6_month" },
+      { "period": "1_year", "url": "https://api.example.com/marketdata/RDGFX/snapshot/1_year" }
+    ]
+  },
+  {
+    "id": "e92a3e51-fd9c-4f6f-89a0-c61ad4ad1b97",
+    "ticker": "ORAFX",
+    "name": "Orange Rock Asset Fund",
+    "dateAdded": "2016-04-18T12:00:00.000Z",
+    "exchange": "NYSE",
+    "marketSnapshots": [
+      { "period": "7_day", "url": "https://api.example.com/marketdata/ORAFX/snapshot/7_day" },
+      { "period": "6_month", "url": "https://api.example.com/marketdata/ORAFX/snapshot/6_month" },
+      { "period": "1_year", "url": "https://api.example.com/marketdata/ORAFX/snapshot/1_year" }
+    ]
+  },
+  {
+    "id": "ab9d8f72-e22c-46e3-948d-84e3423e78bb",
+    "ticker": "ZNGFX",
+    "name": "Zenith Growth Opportunities",
+    "dateAdded": "2019-02-14T16:35:22.000Z",
+    "exchange": "NASDAQ",
+    "marketSnapshots": [
+      { "period": "7_day", "url": "https://api.example.com/marketdata/ZNGFX/snapshot/7_day" },
+      { "period": "6_month", "url": "https://api.example.com/marketdata/ZNGFX/snapshot/6_month" },
+      { "period": "1_year", "url": "https://api.example.com/marketdata/ZNGFX/snapshot/1_year" }
+    ]
+  },
+  {
+    "id": "4d5e6a89-3f22-4f83-9a64-bcf7a86c842d",
+    "ticker": "WHTFX",
+    "name": "White Summit Growth Fund",
+    "dateAdded": "2021-06-30T10:10:10.000Z",
+    "exchange": "NYSE",
+    "marketSnapshots": [
+      { "period": "7_day", "url": "https://api.example.com/marketdata/WHTFX/snapshot/7_day" },
+      { "period": "6_month", "url": "https://api.example.com/marketdata/WHTFX/snapshot/6_month" },
+      { "period": "1_year", "url": "https://api.example.com/marketdata/WHTFX/snapshot/1_year" }
+    ]
+  },
+  {
+    "id": "efb340e7-62ee-4df3-b0e5-6c8a8c2f1381",
+    "ticker": "VLTGX",
+    "name": "Volta Global Growth",
+    "dateAdded": "2020-10-05T08:00:00.000Z",
+    "exchange": "AMEX",
+    "marketSnapshots": [
+      { "period": "7_day", "url": "https://api.example.com/marketdata/VLTGX/snapshot/7_day" },
+      { "period": "6_month", "url": "https://api.example.com/marketdata/VLTGX/snapshot/6_month" },
+      { "period": "1_year", "url": "https://api.example.com/marketdata/VLTGX/snapshot/1_year" }
+    ]
+  },
+  {
+    "id": "ba2f2e4f-942a-4533-94dc-045f2293ec4b",
+    "ticker": "FLWFX",
+    "name": "Flowstone Equity Fund",
+    "dateAdded": "2017-11-13T13:45:00.000Z",
+    "exchange": "NASDAQ",
+    "marketSnapshots": [
+      { "period": "7_day", "url": "https://api.example.com/marketdata/FLWFX/snapshot/7_day" },
+      { "period": "6_month", "url": "https://api.example.com/marketdata/FLWFX/snapshot/6_month" },
+      { "period": "1_year", "url": "https://api.example.com/marketdata/FLWFX/snapshot/1_year" }
+    ]
+  },
+  {
+    "id": "823f0d77-7be7-4a76-bd5d-b35e68cb7c52",
+    "ticker": "SVRFX",
+    "name": "Silver Ridge Growth",
+    "dateAdded": "2023-01-01T00:00:00.000Z",
+    "exchange": "NYSE",
+    "marketSnapshots": [
+      { "period": "7_day", "url": "https://api.example.com/marketdata/SVRFX/snapshot/7_day" },
+      { "period": "6_month", "url": "https://api.example.com/marketdata/SVRFX/snapshot/6_month" },
+      { "period": "1_year", "url": "https://api.example.com/marketdata/SVRFX/snapshot/1_year" }
+    ]
+  },
+  {
+    "id": "c2e3f3b2-a501-4a1c-b52a-7e5e8f9451de",
+    "ticker": "STDFX",
+    "name": "Starlight Discovery Fund",
+    "dateAdded": "2014-05-10T06:30:00.000Z",
+    "exchange": "AMEX",
+    "marketSnapshots": [
+      { "period": "7_day", "url": "https://api.example.com/marketdata/STDFX/snapshot/7_day" },
+      { "period": "6_month", "url": "https://api.example.com/marketdata/STDFX/snapshot/6_month" },
+      { "period": "1_year", "url": "https://api.example.com/marketdata/STDFX/snapshot/1_year" }
+    ]
+  },
+  {
+    "id": "f86d2fa4-6828-4d0c-869a-9dfe4bc57c71",
+    "ticker": "GRVFX",
+    "name": "Gravitas Large Cap Fund",
+    "dateAdded": "2009-09-23T09:50:00.000Z",
+    "exchange": "NYSE",
+    "marketSnapshots": [
+      { "period": "7_day", "url": "https://api.example.com/marketdata/GRVFX/snapshot/7_day" },
+      { "period": "6_month", "url": "https://api.example.com/marketdata/GRVFX/snapshot/6_month" },
+      { "period": "1_year", "url": "https://api.example.com/marketdata/GRVFX/snapshot/1_year" }
+    ]
+  }
+]
