@@ -1,21 +1,18 @@
 import Foundation
 
-class Utilities {
-    static let shared = Utilities()
+struct Utilities {
+    static private var utcDateFormatter: ISO8601DateFormatter {
+        let utcDateFormatter = ISO8601DateFormatter()
+        utcDateFormatter.timeZone = TimeZone(abbreviation: GlobalVars.TimeZone.UTC.rawValue) ?? .gmt
+        
+        return utcDateFormatter
+    }
     
-    func loadJson<T: Decodable>(filename fileName: String) -> [T] where T: Identifiable {
-        if let url = Bundle.main.url(forResource: fileName, withExtension: "json") {
-            do {
-                let data = try Data(contentsOf: url)
-                let decoder = JSONDecoder()
-                let decodedData = try decoder.decode([T].self, from: data)
-                
-                return decodedData
-            } catch {
-                print("error:\(error)")
-            }
+    static func validUTCDate(from dateRawValue: String) -> Bool {
+        guard let _ = Utilities.utcDateFormatter.date(from: dateRawValue) else {
+            return false
         }
         
-        return []
+        return true
     }
 }

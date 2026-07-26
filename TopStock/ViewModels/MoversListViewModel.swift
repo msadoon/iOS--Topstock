@@ -1,16 +1,16 @@
 import SwiftUI
 
 @Observable
-class MarketListViewModel {
-    var markets = [String]()
+final class MoversListViewModel {
+    var securities = [Security]()
     var errorMessage: String?
     
     @MainActor
-    func getMarketsList() async {
+    func getMoversList() async {
         do {
-            let _:[Market] = try await Networking().retrieveData(for: .screener, with: .stocksMovers)
-            
-            //self.markets = rawData
+            let movers: Movers = try await TopStockNetworking.shared.retrieveData(for: .moversStocks)
+
+            self.securities = movers.gainers + movers.losers
         } catch(let error) {
             guard let errorValue = error as? APIError else { return }
             

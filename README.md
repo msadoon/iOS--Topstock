@@ -13,7 +13,7 @@
 - [ ] This is complicated UI. Scrollable candle stick bars for each day. May require paging on the backend. SwiftCharts.
 
 **Networking**
-- [ ] Setup networking to hit all endpoints.
+- [x] Setup networking to hit all endpoints.
 - [ ] Test networking.
 
 **Deployment**

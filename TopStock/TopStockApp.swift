@@ -4,7 +4,7 @@ import SwiftUI
 struct TopStockApp: App {
     var body: some Scene {
         WindowGroup {
-            MarketListView()
+            MoversListView()
                 .preferredColorScheme(.dark)
         }
     }

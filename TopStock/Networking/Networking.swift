@@ -1,44 +1,8 @@
 import Foundation
 
-enum APIError: Error {
-    enum APIErrorMessages: String {
-        case clientError = "Client side error."
-        case urlError = "Invalid URL."
-        case authenticationError = "Authentication issue."
-        case noEndpointError = "Endpoint does not exist."
-        case tooManyRequestsError = "Request limit exceeded."
-        case serverSideError = "Server side error."
-        case unknown = "unknown"
-    }
+final class TopStockNetworking: TopStockAPI {
+    @MainActor static let shared = TopStockNetworking()
     
-    case clientError(APIErrorMessages)
-    case urlError(APIErrorMessages)
-    case authenticationError(APIErrorMessages)
-    case noEndpointError(APIErrorMessages)
-    case tooManyRequestsError(APIErrorMessages)
-    case serverSideError(APIErrorMessages)
-    case unknown(APIErrorMessages)
-}
-
-enum TopStockAPIEndpoint: String {
-    case baseEndpoint = "https://data.alpaca.markets/v1beta1"
-    
-    enum Fragment: String {
-        case screener = "screener"
-        
-        enum Description: String {
-            case stocksActive = "stocks/most-actives"
-            case stocksMovers = "stocks/movers"
-            case cryptoMovers = "crypto/movers"
-        }
-    }
-}
-
-protocol TopStockAPI {
-    func retrieveData<T: Decodable>(for: TopStockAPIEndpoint.Fragment, with description: TopStockAPIEndpoint.Fragment.Description) async throws -> [T] where T: Identifiable
-}
-
-struct Networking: TopStockAPI {
     private var decoder: JSONDecoder {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
@@ -46,21 +10,20 @@ struct Networking: TopStockAPI {
         return decoder
     }
     
-    private var fragmentURL: (TopStockAPIEndpoint.Fragment, TopStockAPIEndpoint.Fragment.Description) -> URL? = { fragment, description in
-        var baseURL = URLComponents(string: TopStockAPIEndpoint.baseEndpoint.rawValue)?.url
-        
-        let screenerComponent = URLComponents(string: fragment.rawValue)?.url(relativeTo: baseURL)
-        let moverComponent = URLComponents(string: description.rawValue)?.url(relativeTo: screenerComponent)
-
-        guard let completeURLComponent = moverComponent else {
-            return baseURL
+    private var pathURL: (TopStockAPIEndpoint) -> URL? = { path in
+        guard let validatedPath = path.validPathComponentDescription else {
+            return nil
         }
+                
+        var baseURL = URLComponents(string: TopStockAPIEndpoint.baseEndpoint)?.url
         
-        return completeURLComponent
+        let completeURL = baseURL?.appendingPathComponent(validatedPath)
+        
+        return completeURL
     }
     
-    func retrieveData<T: Decodable>(for endpoint: TopStockAPIEndpoint.Fragment, with description: TopStockAPIEndpoint.Fragment.Description) async throws -> [T] where T: Identifiable {
-        let parameterizedURL: URL? = fragmentURL(endpoint, description)
+    func retrieveData<T: Decodable>(for endpoint: TopStockAPIEndpoint) async throws -> T {
+        let parameterizedURL: URL? = pathURL(endpoint)
         
         guard let validURL = parameterizedURL else {
             throw APIError.urlError(APIError.APIErrorMessages.urlError)
@@ -79,11 +42,11 @@ struct Networking: TopStockAPI {
         }
         
         do {
-            let parsedJSON = try self.decoder.decode([T].self, from: data)
-            print(parsedJSON)
-            return parsedJSON
-        } catch(let error) {
-            throw error
+            let decodedData = try decoder.decode(T.self, from: data)
+            
+            return decodedData
+        } catch {
+            throw DecodableError.malformedData(.malformedData)
         }
     }
     
@@ -97,7 +60,7 @@ struct Networking: TopStockAPI {
                 validError = APIError.clientError(APIError.APIErrorMessages.clientError)
             case 401:
                 validError = APIError.authenticationError(APIError.APIErrorMessages.authenticationError)
-            case 403, 404:
+            case 404:
                 validError = APIError.noEndpointError(APIError.APIErrorMessages.noEndpointError)
             case 429:
                 validError = APIError.tooManyRequestsError(APIError.APIErrorMessages.tooManyRequestsError)

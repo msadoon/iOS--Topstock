@@ -37,6 +37,10 @@ struct GlobalVars {
     
     enum Padding: CGFloat {
         case ten = 10.0
-        case hundred = 100.0
+        case fifty = 100.0
+    }
+    
+    enum TimeZone: String {
+        case UTC
     }
 }
