@@ -8,11 +8,11 @@ struct Utilities {
         return utcDateFormatter
     }
     
-    static func validUTCDate(from dateRawValue: String) -> Bool {
-        guard let _ = Utilities.utcDateFormatter.date(from: dateRawValue) else {
-            return false
+    static func validUTCDate(from dateRawValue: String) -> Date? {
+        guard let date = Utilities.utcDateFormatter.date(from: dateRawValue) else {
+            return nil
         }
         
-        return true
+        return date
     }
 }

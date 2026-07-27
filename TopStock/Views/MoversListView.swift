@@ -47,7 +47,9 @@ struct MoversListView: View {
              */
         }
         .task {
+            /**
             let _ = await self.moversListViewModel.getMoversList()
+             */
         }
     }
 }

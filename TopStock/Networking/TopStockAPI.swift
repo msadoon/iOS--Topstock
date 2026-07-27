@@ -17,7 +17,7 @@ enum TopStockAPIEndpoint {
         case .historicalBars(let symbol,
                              let timeFrame,
                              let datetime):
-            guard Utilities.validUTCDate(from: datetime) else {
+            guard let _ = Utilities.validUTCDate(from: datetime) else {
                 return nil
             }
             

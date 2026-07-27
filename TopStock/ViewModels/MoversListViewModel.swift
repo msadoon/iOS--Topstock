@@ -4,11 +4,16 @@ import SwiftUI
 final class MoversListViewModel {
     var securities = [Security]()
     var errorMessage: String?
+    // FIXME: This should be an environment object.
+    let networking: TopStockNetworking
     
-    @MainActor
+    init() {
+        self.networking = TopStockNetworking()
+    }
+    
     func getMoversList() async {
         do {
-            let movers: Movers = try await TopStockNetworking.shared.retrieveData(for: .moversStocks)
+            let movers: Movers = try await self.networking.retrieveData(for: .moversStocks)
 
             self.securities = movers.gainers + movers.losers
         } catch(let error) {

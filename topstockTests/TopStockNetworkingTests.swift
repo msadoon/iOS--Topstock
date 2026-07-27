@@ -1,64 +1,49 @@
 import Testing
 import Foundation
-@testable import AdvisorDashboard
+@testable import topstock
 
 struct TopStockNetworkingTests {
-    /**
-        FIXME: Normally I would make a MockNetworking struct to run against tests, but in this project the networking singleton doesn't hit a real network.
-     */
+    private let networking = MockTopStockNetworking()
     
-    @Test func allAdvisors() async throws {
-        let allAdvisors: [Advisor] = try await Networking.shared.retrieveData(for: .advisors)
+    @Test func moversStocks() async throws {
+        self.networking.expectedState = .moversStocks
         
-        #expect(allAdvisors.count == 5)
+        let movers: Movers = try await networking.retrieveData(for: .moversStocks)
         
-        let sampleAdvisor = allAdvisors[3]
+        #expect(movers.gainers.count == 10)
+        #expect(movers.losers.count == 10)
         
-        #expect(sampleAdvisor.name.hasPrefix("Isabella Cruz"))
-        #expect(sampleAdvisor.portfolioSummary.count == 2)
-        let _ = try #require(sampleAdvisor.profilePictureUrl?.absoluteString)
-        let sampleAdvisorPreview = try #require(sampleAdvisor.portfolioSummary.first)
+        let sampleSecurity = movers.losers[3]
         
-        #expect(sampleAdvisorPreview.name.hasPrefix("Mia Patel"))
-        #expect(sampleAdvisorPreview.totalAssets == 32096.30)
+        #expect(sampleSecurity.price == 0.0986)
+        #expect(sampleSecurity.symbol == "VSTD")
+        #expect(sampleSecurity.percentChange == -45.22)
+        #expect(sampleSecurity.change == -0.0814)
     }
     
-    @Test func accountsForAdvisor() async throws {
-        let accountsForAdvisor: [Account] = try await Networking.shared.retrieveData(for: .accounts("k4d3"))
+    @Test func historicalBars() async throws {
+        self.networking.expectedState = .historicalBars
         
-        #expect(accountsForAdvisor.count == 2)
+        let historicalBars: HistoricalBars = try await networking.retrieveData(for: .historicalBars("AAPL", .OneHour, "2026-02-26T09:00:00Z"))
         
-        let sampleAccount = accountsForAdvisor[0]
+        #expect(historicalBars.bars.count == 16)
         
-        #expect(sampleAccount.name.hasPrefix("Nathan Cole"))
+        let sampleCandleStickBar = historicalBars.bars[3]
         
-        let totalAssets = sampleAccount.holdings.reduce(0.0) { partialResult, holding in
-            return partialResult + (Double(holding.units) * holding.unitPrice)
-        }
-        
-        #expect(totalAssets == 16200.00)
-    }
-    
-    @Test func securityForSymbol() async throws {
-        let securityForSymbol: [Security] = try await Networking.shared.retrieveData(for: .ticker("GRTHX"))
-        
-        #expect(securityForSymbol.count == 1)
-        
-        let sampleSecurity = securityForSymbol[0]
-        
-        #expect(sampleSecurity.name == "Green Growth Equity Fund")
-        let dateAvailable = try #require(sampleSecurity.dateAdded)
-        
-        let dateComponents = Calendar.current.dateComponents ([.month, .day, .year], from: dateAvailable)
-        
-        #expect(dateComponents.month == 3)
-        #expect(dateComponents.day == 2)
-        #expect(dateComponents.year == 2015)
-        
-        #expect(sampleSecurity.exchange == .NASDAQ)
-        
-        let _ = try #require(sampleSecurity.snapshots[.sevenDay]?.absoluteString)
-        let _ = try #require(sampleSecurity.snapshots[.sixMonth]?.absoluteString)
-        let _ = try #require(sampleSecurity.snapshots[.oneYear]?.absoluteString)
+        #expect(sampleCandleStickBar.numTrades == 213)
+        #expect(sampleCandleStickBar.volume == 9240)
+        #expect(sampleCandleStickBar.highPrice == 375.01)
+        let timestampDate = try #require(sampleCandleStickBar.timestamp)
+        let dateComponents = Calendar.current.dateComponents([.hour, .day, .month, .year], from: timestampDate)
+        /** FIXME: Ensure we have a Utility to extract the 24 hour time.
+        #expect(dateComponents.hour == 11)
+         */
+        #expect(dateComponents.day == 26)
+        #expect(dateComponents.month == 2)
+        #expect(dateComponents.year == 2026)
+        #expect(sampleCandleStickBar.closePrice == 374.74)
+        #expect(sampleCandleStickBar.openPrice == 374.9)
+        #expect(sampleCandleStickBar.lowPrice == 374.7)
+        #expect(sampleCandleStickBar.volumeWeightedAveragePrice == 374.82)
     }
 }

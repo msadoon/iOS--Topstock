@@ -1,8 +1,6 @@
 import Foundation
 
 final class TopStockNetworking: TopStockAPI {
-    @MainActor static let shared = TopStockNetworking()
-    
     private var decoder: JSONDecoder {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase

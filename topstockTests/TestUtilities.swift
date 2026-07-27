@@ -1,7 +1,7 @@
 import Foundation
 
 class TestUtilities {
-    static let bundle = Bundle.module
+    static let bundle = Bundle(for: TestUtilities.self)
     
     static func loadJson<T: Decodable>(filename fileName: String) -> T? {
         if let url = TestUtilities.bundle.url(forResource: fileName, withExtension: "json") {
@@ -9,7 +9,6 @@ class TestUtilities {
                 let data = try Data(contentsOf: url)
                 let decoder = JSONDecoder()
                 decoder.keyDecodingStrategy = .convertFromSnakeCase
-                decoder.dateDecodingStrategy = .iso8601
                 let decodedData = try decoder.decode(T.self, from: data)
                 
                 return decodedData

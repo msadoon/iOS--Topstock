@@ -2,7 +2,7 @@
 
  ![frontend for topstock](/Public/topstock_icon.png "app logo")
 
-[backend client](https://github.com/msadoon/topstock)
+[backend server](https://github.com/msadoon/topstock)
 
 ## Features Todo
 
