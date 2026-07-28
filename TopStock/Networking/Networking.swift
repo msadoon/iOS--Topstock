@@ -1,6 +1,8 @@
 import Foundation
 
-final class TopStockNetworking: TopStockAPI {
+final class TopStockNetworking: TopStockAPI, Sendable {
+    static let shared = TopStockNetworking()
+    
     private var decoder: JSONDecoder {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
@@ -8,20 +10,8 @@ final class TopStockNetworking: TopStockAPI {
         return decoder
     }
     
-    private var pathURL: (TopStockAPIEndpoint) -> URL? = { path in
-        guard let validatedPath = path.validPathComponentDescription else {
-            return nil
-        }
-                
-        var baseURL = URLComponents(string: TopStockAPIEndpoint.baseEndpoint)?.url
-        
-        let completeURL = baseURL?.appendingPathComponent(validatedPath)
-        
-        return completeURL
-    }
-    
     func retrieveData<T: Decodable>(for endpoint: TopStockAPIEndpoint) async throws -> T {
-        let parameterizedURL: URL? = pathURL(endpoint)
+        let parameterizedURL: URL? = pathURL(for: endpoint)
         
         guard let validURL = parameterizedURL else {
             throw APIError.urlError(APIError.APIErrorMessages.urlError)
@@ -46,6 +36,18 @@ final class TopStockNetworking: TopStockAPI {
         } catch {
             throw DecodableError.malformedData(.malformedData)
         }
+    }
+    
+    private func pathURL(for path: TopStockAPIEndpoint) -> URL? {
+        guard let validatedPath = path.validPathComponentDescription else {
+            return nil
+        }
+                
+        let baseURL = URLComponents(string: TopStockAPIEndpoint.baseEndpoint)?.url
+        
+        let completeURL = baseURL?.appendingPathComponent(validatedPath)
+        
+        return completeURL
     }
     
     private func errorState(in response: HTTPURLResponse) -> APIError? {
