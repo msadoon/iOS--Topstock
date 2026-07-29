@@ -7,14 +7,16 @@
 ## Features Todo
 
 **General UI/UX**
-- [ ] Design the app layout for the market movers and historical bars.
+- [x] Design the app layout for the market movers and historical bars.
+- [] Implement list view UI/UX.
+- [] Implement detail view UI/UX
 
 **Historical Bars**
 - [ ] This is complicated UI. Scrollable candle stick bars for each day. May require paging on the backend. SwiftCharts.
 
 **Networking**
 - [x] Setup networking to hit all endpoints.
-- [ ] Test networking.
+- [x] Test networking.
 
 **Deployment**
 - [ ] Setup Fastlane. 

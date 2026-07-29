@@ -38,7 +38,7 @@ final class TopStockNetworking: TopStockAPI, Sendable {
         }
     }
     
-    private func pathURL(for path: TopStockAPIEndpoint) -> URL? {
+    func pathURL(for path: TopStockAPIEndpoint) -> URL? {
         guard let validatedPath = path.validPathComponentDescription else {
             return nil
         }

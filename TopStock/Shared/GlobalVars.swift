@@ -6,10 +6,9 @@ struct GlobalVars {
     }
     
     enum Text: String {
-        case numAccounts = "# Accounts: "
-        case advisors = "Advisors"
-        case accounts = "Accounts"
-        case accountNum = "Account #"
+        case change = "Change: $%@ %@"
+        case gainers = "Gainers"
+        case losers = "Losers"
         case generalError = "Unknown"
         case defaultCurrency = "USD"
         case dateAdded = "Date Added: "
@@ -25,14 +24,18 @@ struct GlobalVars {
     enum ImageSymbols: String {
         case placeholder = "person.circle"
         case market = "chart.bar.xaxis"
-        case filter = "line.3.horizontal.decrease.circle"
-        case custodian = "folder.fill"
+        case gainers = "chart.line.uptrend.xyaxis"
+        case losers = "chart.line.downtrend.xyaxis"
     }
     
     enum ImageStyling: CGFloat {
         case cornerRadius = 10.0
         case relativeWidthOneFifth = 0.2
         case relativeWidthTwoThirds = 0.67
+    }
+    
+    enum Formatting: Int {
+        case numberPrecision = 2
     }
     
     enum Padding: CGFloat {

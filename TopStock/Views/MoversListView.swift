@@ -3,50 +3,56 @@ import SwiftUI
 struct MoversListView: View {
     @Environment(MoversListViewModel.self) private var moversListViewModel
     @State private var showAlert: (flag: Bool, msg: String?) = (false, nil)
+    @State var geometry = CGRect.zero
     
     var body: some View {
         NavigationStack {
-            List {
-                Section {
-                    ForEach(self.moversListViewModel.gainers, id: \.id) { security in
-                        Button {
-                            /**
-                             FIXME: Bring up modal with candle stick data.
-                             */
-                        } label: {
-                            VStack(alignment: .leading) {
-                                Text(security.symbol)
-                                    .fontDesign(.monospaced)
-                                    .fontWidth(.expanded)
-                                    .fontWeight(.semibold)
-                                Text("\(security.percentChange)")
-                                    .fontDesign(.monospaced)
-                                    .fontWidth(.condensed)
-                                    .fontWeight(.light)
-                                Text(security.change.formatted(.currency(code: GlobalVars.Text.defaultCurrency.rawValue)))
-                                    .fontDesign(.monospaced)
-                                    .fontWidth(.condensed)
-                                    .fontWeight(.light)
-                                Text(security.price.formatted(.currency(code: GlobalVars.Text.defaultCurrency.rawValue)))
-                                    .fontDesign(.monospaced)
-                                    .fontWidth(.condensed)
-                                    .fontWeight(.light)
-                            }
+            VStack {/**
+                List {
+                    Section(header:
+                                HStack {
+                        Label(GlobalVars.Text.gainers.rawValue,
+                              systemImage: GlobalVars.ImageSymbols.gainers.rawValue)
+                    })
+                        {
+                        ForEach(self.moversListViewModel.gainers, id: \.id) { security in
+                            SecurityView(security: security,
+                                         geometry: self.geometry)
                         }
-                        .buttonStyle(.borderedProminent)
-                        .tint(.green)
                     }
+                        .headerProminence(.increased)
+                    
+                    Section(header:
+                                HStack {
+                        Label(GlobalVars.Text.losers.rawValue,
+                              systemImage: GlobalVars.ImageSymbols.losers.rawValue)
+                    })
+                        {
+                        ForEach(self.moversListViewModel.losers, id: \.id) { security in
+                            SecurityView(security: security,
+                                         geometry: self.geometry)
+                        }
+                    }
+                        .headerProminence(.increased)
                 }
+                .listStyle(.plain)
+                     */
+                Text("Display test")
             }
             .navigationTitle(GlobalVars.Brand.title.rawValue)
-            .navigationBarTitleDisplayMode(.inline)
-            /**
-             .onChange(of: self.advisorViewModel.errorMessage) { _, newMessage in
-             guard let messageValue = newMessage else { return }
-             
-             self.showAlert = (true, messageValue)
-             }
-             */
+            //.navigationBarTitleDisplayMode(.inline)
+            .onChange(of: self.moversListViewModel.errorMessage) { _, newMessage in
+                guard let messageValue = newMessage else { return }
+                
+                self.showAlert = (true, messageValue)
+            }
+            .onGeometryChange(for: CGRect.self) { proxy in
+                let viewFrame = proxy.frame(in: .local)
+                
+                return viewFrame
+            } action: { newValue in
+                self.geometry = newValue
+            }
         }
         .task {
             let _ = await self.moversListViewModel.sampleData()

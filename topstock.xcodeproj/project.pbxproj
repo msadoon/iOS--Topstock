@@ -35,6 +35,8 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				MoversListView.swift,
+				SecurityView.swift,
+				SymbolLogoView.swift,
 			);
 			target = 898C4ED718381982008A7350 /* topstock */;
 		};
