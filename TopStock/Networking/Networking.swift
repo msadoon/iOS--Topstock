@@ -1,6 +1,6 @@
 import Foundation
 
-final class TopStockNetworking: TopStockAPI, Sendable {
+final class TopStockNetworking: TopStockAPI {
     static let shared = TopStockNetworking()
     
     private var decoder: JSONDecoder {

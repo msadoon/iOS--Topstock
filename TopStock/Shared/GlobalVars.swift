@@ -6,7 +6,8 @@ struct GlobalVars {
     }
     
     enum Text: String {
-        case change = "Change: $%@ %@"
+        case dollarChange = "$%@"
+        case percentChange = "%i%%"
         case gainers = "Gainers"
         case losers = "Losers"
         case generalError = "Unknown"

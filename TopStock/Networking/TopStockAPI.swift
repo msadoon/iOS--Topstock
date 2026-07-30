@@ -1,5 +1,5 @@
 enum TopStockAPIEndpoint {
-    static let baseEndpoint = "https://api.topstock.synology.me"
+    static let baseEndpoint = "https://api.topstockdev.ca"
     
     enum HistoricalBarTimeFrame: String {
         case FiveMin = "5Min"
@@ -28,6 +28,6 @@ enum TopStockAPIEndpoint {
     }
 }
 
-protocol TopStockAPI {
+protocol TopStockAPI: Sendable {
     func retrieveData<T: Decodable>(for: TopStockAPIEndpoint) async throws -> T
 }

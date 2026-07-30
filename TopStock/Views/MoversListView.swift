@@ -7,7 +7,7 @@ struct MoversListView: View {
     
     var body: some View {
         NavigationStack {
-            VStack {/**
+            VStack {
                 List {
                     Section(header:
                                 HStack {
@@ -36,11 +36,10 @@ struct MoversListView: View {
                         .headerProminence(.increased)
                 }
                 .listStyle(.plain)
-                     */
-                Text("Display test")
+                     
             }
             .navigationTitle(GlobalVars.Brand.title.rawValue)
-            //.navigationBarTitleDisplayMode(.inline)
+            .navigationBarTitleDisplayMode(.inline)
             .onChange(of: self.moversListViewModel.errorMessage) { _, newMessage in
                 guard let messageValue = newMessage else { return }
                 
@@ -55,7 +54,7 @@ struct MoversListView: View {
             }
         }
         .task {
-            let _ = await self.moversListViewModel.sampleData()
+            let _ = await self.moversListViewModel.getMoversList()
         }
     }
 }
