@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		707CEB8E301D8E5D005D2E88 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 707CEB8D301D8E5D005D2E88 /* README.md */; };
+		707CECA8301D9BEE005D2E88 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 707CECA7301D9BEE005D2E88 /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -23,7 +23,7 @@
 /* Begin PBXFileReference section */
 		707CEB63301D8DC0005D2E88 /* Topstock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Topstock.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		707CEB70301D8DC1005D2E88 /* TopstockTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TopstockTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		707CEB8D301D8E5D005D2E88 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		707CECA7301D9BEE005D2E88 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -60,7 +60,7 @@
 		707CEB5A301D8DC0005D2E88 = {
 			isa = PBXGroup;
 			children = (
-				707CEB8D301D8E5D005D2E88 /* README.md */,
+				707CECA7301D9BEE005D2E88 /* README.md */,
 				707CEB65301D8DC0005D2E88 /* Topstock */,
 				707CEB73301D8DC1005D2E88 /* TopstockTests */,
 				707CEB64301D8DC0005D2E88 /* Products */,
@@ -169,7 +169,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				707CEB8E301D8E5D005D2E88 /* README.md in Resources */,
+				707CECA8301D9BEE005D2E88 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
