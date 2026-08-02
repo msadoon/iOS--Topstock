@@ -23,7 +23,7 @@ struct GlobalVars {
     }
     
     enum ImageSymbols: String {
-        case placeholder = "person.circle"
+        case placeholder = "photo.fill"
         case market = "chart.bar.xaxis"
         case gainers = "chart.line.uptrend.xyaxis"
         case losers = "chart.line.downtrend.xyaxis"

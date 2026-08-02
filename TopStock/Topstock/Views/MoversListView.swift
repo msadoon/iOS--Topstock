@@ -1,42 +1,34 @@
 import SwiftUI
 
+fileprivate enum SectionType {
+    case gainers
+    case losers
+}
+
 struct MoversListView: View {
     @Environment(MoversListViewModel.self) private var moversListViewModel
     @State private var showAlert: (flag: Bool, msg: String?) = (false, nil)
-    @State var geometry = CGRect.zero
+    @State private var geometry = CGRect.zero
+    @State private var showSecurityDetails = false
+    @State private var selectedSecurity: Security?
+    
+    private let columns = [GridItem(.flexible()), GridItem(.flexible())]
     
     var body: some View {
         NavigationStack {
             VStack {
-                List {
-                    Section(header:
-                                HStack {
-                        Label(GlobalVars.Text.gainers.rawValue,
-                              systemImage: GlobalVars.ImageSymbols.gainers.rawValue)
-                    })
-                        {
-                        ForEach(self.moversListViewModel.gainers, id: \.id) { security in
-                            SecurityView(security: security,
-                                         geometry: self.geometry)
-                        }
-                    }
-                        .headerProminence(.increased)
+                ScrollView {
+                    section(for: self.moversListViewModel.gainers,
+                            in: self.columns,
+                            with: self.geometry,
+                            type: .gainers)
                     
-                    Section(header:
-                                HStack {
-                        Label(GlobalVars.Text.losers.rawValue,
-                              systemImage: GlobalVars.ImageSymbols.losers.rawValue)
-                    })
-                        {
-                        ForEach(self.moversListViewModel.losers, id: \.id) { security in
-                            SecurityView(security: security,
-                                         geometry: self.geometry)
-                        }
-                    }
-                        .headerProminence(.increased)
+                    section(for: self.moversListViewModel.losers,
+                            in: self.columns,
+                            with: self.geometry,
+                            type: .losers)
+                    
                 }
-                .listStyle(.plain)
-                     
             }
             .navigationTitle(GlobalVars.Brand.title.rawValue)
             .navigationBarTitleDisplayMode(.inline)
@@ -52,10 +44,47 @@ struct MoversListView: View {
             } action: { newValue in
                 self.geometry = newValue
             }
+            .onAppear {
+                Task { @MainActor
+                    let _ = await self.moversListViewModel.getMoversList()
+                }
+            }
+            .sheet(isPresented: self.$showSecurityDetails, onDismiss: { self.selectedSecurity = nil }) {
+                if let availableSecurity = self.selectedSecurity {
+                    SecurityDetailsView(security: availableSecurity)
+                        .presentationDetents([.medium])
+                }
+            }
         }
-        .task {
-            ///FIXME: securities don't load on iOS 18.4, use onAppear.
-            let _ = await self.moversListViewModel.getMoversList()
+    }
+    
+    @ViewBuilder
+    private func section(for movers: [Security],
+                         in columns: [GridItem],
+                         with geometry: CGRect,
+                         type: SectionType) -> some View {
+        let sectionTitle = type == .gainers ? GlobalVars.Text.gainers.rawValue : GlobalVars.Text.losers.rawValue
+        
+        let sectionImage = type == .gainers ? GlobalVars.ImageSymbols.gainers.rawValue : GlobalVars.ImageSymbols.losers.rawValue
+        
+        Section(header:
+                    HStack {
+            Label(sectionTitle,
+                  systemImage: sectionImage)
+            Spacer()
+        })
+        {
+            LazyVGrid(columns: columns) {
+                ForEach(movers, id: \.id) { security in
+                    SecurityView(security: security,
+                                 geometry: geometry)
+                    .onTapGesture {
+                        self.selectedSecurity = security
+                        self.showSecurityDetails = true
+                    }
+                }
+            }
         }
+        .headerProminence(.increased)
     }
 }

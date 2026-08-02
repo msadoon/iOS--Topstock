@@ -12,10 +12,11 @@
 - [ ] Implement detail view UI/UX
 
 *bugs*
-- [ ] Fix display issues on list view
-- [ ] Ensure list view loads for iOS 18.4+ on first install (including images).
-- [ ] Put it logos for data providers (alpaca, logos.dev)
-- [ ] Clean up cell spacing for list view.
+- [x] Fix display issues on list view
+- [x] Ensure list view loads for iOS 18.4+ on first install (including images).
+- [ ] Put it logos for data providers (alpaca, logos.dev - link to them).
+- [x] Clean up cell spacing for list view.
+- [ ] First tap on security shows an empty modal - fix.
 
 **Historical Bars**
 - [ ] This is complicated UI. Scrollable candle stick bars for each day. May require paging on the backend. SwiftCharts.
@@ -31,5 +32,5 @@
 - [ ] Work on after all other features. Configure with JWT authentication on the server.
 
 **Security**
-- [ ] Ensure HTTPS is being used. Ie. no arbitrary loads.
+- [x] Ensure HTTPS is being used. Ie. no arbitrary loads.
 
