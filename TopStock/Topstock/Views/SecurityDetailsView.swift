@@ -20,7 +20,11 @@ fileprivate enum SnapshotPeriod: String, CaseIterable {
 struct SecurityDetailsView: View {
     @State private var selectedSnapshot: SnapshotPeriod = .sevenDay
     private var security: Security
-
+    private var logoURL: URL? {
+        let endpoint = TopStockAPIEndpoint.logos(self.security.symbol)
+        return TopStockNetworking.shared.pathURL(for: endpoint)
+    }
+    
     init(security: Security) {
         self.security = security
     }
@@ -48,8 +52,7 @@ struct SecurityDetailsView: View {
                 .pickerStyle(.segmented)
                 .padding()
                 
-            Image(systemName: "chart.xyaxis.line")
-                    .resizable()
+            AsyncImage(url: self.logoURL)
                     .aspectRatio(contentMode: .fit)
                     .padding()
         }

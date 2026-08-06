@@ -21,12 +21,14 @@ struct MoversListView: View {
                     section(for: self.moversListViewModel.gainers,
                             in: self.columns,
                             with: self.geometry,
-                            type: .gainers)
+                            type: .gainers,
+                            selectedSecurity: $selectedSecurity)
                     
                     section(for: self.moversListViewModel.losers,
                             in: self.columns,
                             with: self.geometry,
-                            type: .losers)
+                            type: .losers,
+                            selectedSecurity: $selectedSecurity)
                     
                 }
             }
@@ -49,6 +51,14 @@ struct MoversListView: View {
                     let _ = await self.moversListViewModel.getMoversList()
                 }
             }
+            .onChange(of: self.selectedSecurity) { _, newValue in
+                guard let _ = newValue else {
+                    self.showSecurityDetails = false
+                    return
+                }
+                
+                self.showSecurityDetails = true
+            }
             .sheet(isPresented: self.$showSecurityDetails, onDismiss: { self.selectedSecurity = nil }) {
                 if let availableSecurity = self.selectedSecurity {
                     SecurityDetailsView(security: availableSecurity)
@@ -62,7 +72,8 @@ struct MoversListView: View {
     private func section(for movers: [Security],
                          in columns: [GridItem],
                          with geometry: CGRect,
-                         type: SectionType) -> some View {
+                         type: SectionType,
+                         selectedSecurity: Binding<Security?>) -> some View {
         let sectionTitle = type == .gainers ? GlobalVars.Text.gainers.rawValue : GlobalVars.Text.losers.rawValue
         
         let sectionImage = type == .gainers ? GlobalVars.ImageSymbols.gainers.rawValue : GlobalVars.ImageSymbols.losers.rawValue
@@ -79,8 +90,7 @@ struct MoversListView: View {
                     SecurityView(security: security,
                                  geometry: geometry)
                     .onTapGesture {
-                        self.selectedSecurity = security
-                        self.showSecurityDetails = true
+                        selectedSecurity.wrappedValue = security
                     }
                 }
             }

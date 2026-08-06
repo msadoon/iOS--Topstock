@@ -1,6 +1,6 @@
 import Foundation
 
-struct Security: Decodable, Identifiable {
+struct Security: Decodable, Equatable, Identifiable {
     var id: String {
        symbol
     }
