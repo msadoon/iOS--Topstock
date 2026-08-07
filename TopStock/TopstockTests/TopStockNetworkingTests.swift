@@ -5,8 +5,9 @@ import Foundation
 struct TopStockNetworkingTests {
     private let networking = MockTopStockNetworking()
     
+    @MainActor
     @Test func moversStocks() async throws {
-        self.networking.expectedState = .moversStocks
+        MockTopStockNetworking.expectedState = .moversStocks
         
         let movers: Movers = try await networking.retrieveData(for: .moversStocks)
         
@@ -21,8 +22,9 @@ struct TopStockNetworkingTests {
         #expect(sampleSecurity.change == -0.0814)
     }
     
+    @MainActor
     @Test func historicalBars() async throws {
-        self.networking.expectedState = .historicalBars
+        MockTopStockNetworking.expectedState = .historicalBars
         
         let historicalBars: HistoricalBars = try await networking.retrieveData(for: .historicalBars("AAPL", .OneHour, "2026-02-26T09:00:00Z"))
         

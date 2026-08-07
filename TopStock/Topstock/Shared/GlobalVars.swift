@@ -16,9 +16,8 @@ struct GlobalVars {
         
         enum Exchange: String {
             case timePeriod = "Time Period"
-            case sevenDayPeriod = "7 Day"
-            case sixMonthDayPeriod = "6 Month"
-            case oneYearPeriod = "1 Year"
+            case fiveMinPeriod = "5 Minutes"
+            case oneHourPeriod = "1 Hour"
         }
     }
     

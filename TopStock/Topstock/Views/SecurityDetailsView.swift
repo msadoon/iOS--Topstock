@@ -1,24 +1,21 @@
 import SwiftUI
 
 fileprivate enum SnapshotPeriod: String, CaseIterable {
-    case sevenDay = "7_day"
-    case sixMonth = "6_month"
-    case oneYear = "1_year"
+    case fiveMin
+    case oneHour
     
     var description: String {
         switch self {
-        case .sevenDay:
-            GlobalVars.Text.Exchange.sevenDayPeriod.rawValue
-        case .sixMonth:
-            GlobalVars.Text.Exchange.sixMonthDayPeriod.rawValue
-        case .oneYear:
-            GlobalVars.Text.Exchange.oneYearPeriod.rawValue
+        case .fiveMin:
+            GlobalVars.Text.Exchange.fiveMinPeriod.rawValue
+        case .oneHour:
+            GlobalVars.Text.Exchange.oneHourPeriod.rawValue
         }
     }
 }
 
 struct SecurityDetailsView: View {
-    @State private var selectedSnapshot: SnapshotPeriod = .sevenDay
+    @State private var selectedSnapshot: SnapshotPeriod = .fiveMin
     private var security: Security
     private var logoURL: URL? {
         let endpoint = TopStockAPIEndpoint.logos(self.security.symbol)
@@ -30,9 +27,25 @@ struct SecurityDetailsView: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading) {
-                Text(self.security.symbol)
-                    .font(.title2)
+        ScrollView {
+            HStack {
+                AsyncImage(url: self.logoURL)
+                    .aspectRatio(contentMode: .fit)
+                    .padding()
+                VStack {
+                    Text(self.security.symbol)
+                        .font(.title)
+                    Text(self.security.price.formatted(.currency(code: GlobalVars.Text.defaultCurrency.rawValue)))
+                        .bold()
+                        .font(.subheadline)
+                    Text(Utilities.formattedDollarChange(for: self.security))
+                        .foregroundStyle(self.security.percentChange < 0 ? .red : .green)
+                        .font(.callout)
+                    Text(Utilities.formattedPercentChange(for: self.security))
+                        .foregroundStyle(self.security.percentChange < 0 ? .red : .green)
+                        .font(.callout)
+                }
+            }
             /**
                 Text(availableSecurity.ticker)
                     .font(.title3)
@@ -51,10 +64,6 @@ struct SecurityDetailsView: View {
                 }
                 .pickerStyle(.segmented)
                 .padding()
-                
-            AsyncImage(url: self.logoURL)
-                    .aspectRatio(contentMode: .fit)
-                    .padding()
         }
         .padding()
     }

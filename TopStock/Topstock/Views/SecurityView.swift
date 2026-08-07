@@ -3,14 +3,7 @@ import SwiftUI
 struct SecurityView: View {
     private let security: Security
     private let geometry: CGRect
-    private var formattedDollarChange: String {
-        String(format: GlobalVars.Text.dollarChange.rawValue, self.security.change
-                .formatted(.number
-                    .precision(.fractionLength(GlobalVars.Formatting.numberPrecision.rawValue))))
-    }
-    private var formattedPercentChange: String {
-        String(format: GlobalVars.Text.percentChange.rawValue, Int(self.security.percentChange))
-    }
+
 
     init(security: Security, geometry: CGRect) {
         self.security = security
@@ -21,7 +14,7 @@ struct SecurityView: View {
         HStack(alignment: .center) {
             SymbolLogoView(symbol: self.security.symbol,
                            size: self.geometry.size)
-            VStack(alignment: .trailing) {
+            VStack(alignment: .leading) {
                 Text(self.security.symbol)
                     .font(.headline)
                 /**
@@ -30,10 +23,10 @@ struct SecurityView: View {
                 Text(self.security.price.formatted(.currency(code: GlobalVars.Text.defaultCurrency.rawValue)))
                     .bold()
                     .font(.subheadline)
-                Text(self.formattedDollarChange)
+                Text(Utilities.formattedDollarChange(for: self.security))
                     .foregroundStyle(self.security.percentChange < 0 ? .red : .green)
                     .font(.callout)
-                Text(self.formattedPercentChange)
+                Text(Utilities.formattedPercentChange(for: self.security))
                     .foregroundStyle(self.security.percentChange < 0 ? .red : .green)
                     .font(.callout)
             }

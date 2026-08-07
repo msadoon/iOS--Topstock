@@ -10,10 +10,10 @@ final class MockTopStockNetworking: TopStockAPI {
     
     let apiError = APIError.tooManyRequestsError(APIError.APIErrorMessages.tooManyRequestsError)
     
-    var expectedState: ExpectedState = .apiError
+    static var expectedState: ExpectedState = .apiError
     
     func retrieveData<T: Decodable>(for endpoint: TopStockAPIEndpoint) async throws -> T {
-        switch expectedState {
+        switch MockTopStockNetworking.expectedState {
         case .historicalBars:
             return TestUtilities.loadJson(filename: "HistoricalBars")!
         case .moversStocks:

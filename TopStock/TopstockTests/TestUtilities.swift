@@ -1,6 +1,6 @@
 import Foundation
 
-class TestUtilities {
+final class TestUtilities {
     static let bundle = Bundle(for: TestUtilities.self)
     
     static func loadJson<T: Decodable>(filename fileName: String) -> T? {

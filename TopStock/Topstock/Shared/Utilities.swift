@@ -15,4 +15,14 @@ struct Utilities {
         
         return date
     }
+    
+    static func formattedDollarChange(for security: Security) -> String {
+        String(format: GlobalVars.Text.dollarChange.rawValue, security.change
+                .formatted(.number
+                    .precision(.fractionLength(GlobalVars.Formatting.numberPrecision.rawValue))))
+    }
+    
+    static func formattedPercentChange(for security: Security) -> String {
+        String(format: GlobalVars.Text.percentChange.rawValue, Int(security.percentChange))
+    }
 }

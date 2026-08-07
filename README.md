@@ -8,15 +8,15 @@
 
 **General UI/UX**
 - [x] Design the app layout for the market movers and historical bars.
-- [ ] Implement list view UI/UX.
-- [ ] Implement detail view UI/UX
+- [x] Implement list view UI/UX.
+- [x] Implement detail view UI/UX. (Update the header to be more informative.)
 
 *bugs*
 - [x] Fix display issues on list view
 - [x] Ensure list view loads for iOS 18.4+ on first install (including images).
 - [ ] Put it logos for data providers (alpaca, logos.dev - link to them).
 - [x] Clean up cell spacing for list view.
-- [ ] First tap on security shows an empty modal - fix.
+- [x] First tap on security shows an empty modal - fix.
 
 **Historical Bars**
 - [ ] This is complicated UI. Scrollable candle stick bars for each day. May require paging on the backend. SwiftCharts.
@@ -33,4 +33,3 @@
 
 **Security**
 - [x] Ensure HTTPS is being used. Ie. no arbitrary loads.
-
