@@ -7,9 +7,9 @@ fileprivate enum SnapshotPeriod: String, CaseIterable {
     var description: String {
         switch self {
         case .fiveMin:
-            GlobalVars.Text.Exchange.fiveMinPeriod.rawValue
+            GlobalVars.Text.TimeLine.fiveMinPeriod.rawValue
         case .oneHour:
-            GlobalVars.Text.Exchange.oneHourPeriod.rawValue
+            GlobalVars.Text.TimeLine.oneHourPeriod.rawValue
         }
     }
 }
@@ -60,10 +60,12 @@ struct SecurityDetailsView: View {
                         Text(option.description)
                     }
                 } label: {
-                    Text(GlobalVars.Text.Exchange.timePeriod.rawValue)
+                    Text(GlobalVars.Text.TimeLine.timePeriod)
                 }
                 .pickerStyle(.segmented)
                 .padding()
+            
+            TimeLineChartView()
         }
         .padding()
     }

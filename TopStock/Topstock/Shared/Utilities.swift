@@ -25,4 +25,18 @@ struct Utilities {
     static func formattedPercentChange(for security: Security) -> String {
         String(format: GlobalVars.Text.percentChange.rawValue, Int(security.percentChange))
     }
+    
+    static func formattedTime(for date: Date?, timeFrame: GlobalVars.Text.TimeLine) -> Int? {
+        guard let dateValue = date else {
+            return nil
+        }
+        
+        let calendarTimeFrame: Calendar.Component = timeFrame == .fiveMinPeriod ? .minute : .hour
+        
+        let conversionResultDateComponents = Calendar.current.dateComponents([calendarTimeFrame], from: dateValue)
+
+        let formattedTime = timeFrame == .fiveMinPeriod ? conversionResultDateComponents.minute : conversionResultDateComponents.hour
+        
+        return formattedTime
+    }
 }

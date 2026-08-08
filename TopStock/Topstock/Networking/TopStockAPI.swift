@@ -15,15 +15,28 @@ enum TopStockAPIEndpoint {
         case .moversStocks:
             return "movers/stocks"
         case .historicalBars(let symbol,
+                             _,
+                             _):
+            return "stocks/\(symbol)"
+        case .logos(let symbol):
+            return "logos/\(symbol)"
+        }
+    }
+    
+    var queryItems: [String: String] {
+        switch self {
+        case .historicalBars(_,
                              let timeFrame,
                              let datetime):
             guard let _ = Utilities.validUTCDate(from: datetime) else {
-                return nil
+                return [:]
             }
             
-            return "stocks/\(symbol)?timeframe=\(timeFrame.rawValue)&date=\(datetime)"
-        case .logos(let symbol):
-            return "logos/\(symbol)"
+            return ["timeframe": timeFrame.rawValue,
+                    "date": datetime]
+        case .moversStocks,
+             .logos:
+            return [:]
         }
     }
 }

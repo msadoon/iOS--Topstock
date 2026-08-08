@@ -42,10 +42,15 @@ final class TopStockNetworking: TopStockAPI {
         guard let validatedPath = path.validPathComponentDescription else {
             return nil
         }
+        
+        let queryItems = path.queryItems.map { URLQueryItem(name: $0.0,
+                                                            value: $0.1)
+        }
                 
         let baseURL = URLComponents(string: TopStockAPIEndpoint.baseEndpoint)?.url
         
         let completeURL = baseURL?.appendingPathComponent(validatedPath)
+            .appending(queryItems: queryItems)
         
         return completeURL
     }
