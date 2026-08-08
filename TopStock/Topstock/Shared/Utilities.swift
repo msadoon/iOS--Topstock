@@ -3,9 +3,32 @@ import Foundation
 struct Utilities {
     static private var utcDateFormatter: ISO8601DateFormatter {
         let utcDateFormatter = ISO8601DateFormatter()
-        utcDateFormatter.timeZone = TimeZone(abbreviation: GlobalVars.TimeZone.UTC.rawValue) ?? .gmt
+        utcDateFormatter.timeZone = Utilities.utcTimeZone
         
         return utcDateFormatter
+    }
+    
+    static private var utcTimeZone: TimeZone {
+        TimeZone(abbreviation: GlobalVars.TimeZone.UTC.rawValue) ?? .gmt
+    }
+    
+    static private var utcCalendar: Calendar {
+        var utcCalendar = Calendar.current
+        
+        utcCalendar.timeZone = Utilities.utcTimeZone
+        
+        return utcCalendar
+    }
+    
+    /** FIXME:  Testable */
+    static func yesterdaysUTCDate() -> String {
+        let todaysDate = Date.now
+        
+        guard let yesterdaysDate = Utilities.utcCalendar.date(byAdding: .day, value: -1, to: todaysDate, wrappingComponents: false) else {
+            return ""
+        }
+        
+        return Utilities.utcDateFormatter.string(from: yesterdaysDate)
     }
     
     static func validUTCDate(from dateRawValue: String) -> Date? {
@@ -26,16 +49,17 @@ struct Utilities {
         String(format: GlobalVars.Text.percentChange.rawValue, Int(security.percentChange))
     }
     
-    static func formattedTime(for date: Date?, timeFrame: GlobalVars.Text.TimeLine) -> Int? {
+    /** FIXME:  Testable */
+    static func formattedTime(for date: Date?, timeFrame: TopStockAPIEndpoint.HistoricalBarTimeFrame) -> Int? {
         guard let dateValue = date else {
             return nil
         }
         
-        let calendarTimeFrame: Calendar.Component = timeFrame == .fiveMinPeriod ? .minute : .hour
+        let calendarTimeFrame: Calendar.Component = timeFrame == .FiveMin ? .minute : .hour
         
         let conversionResultDateComponents = Calendar.current.dateComponents([calendarTimeFrame], from: dateValue)
 
-        let formattedTime = timeFrame == .fiveMinPeriod ? conversionResultDateComponents.minute : conversionResultDateComponents.hour
+        let formattedTime = timeFrame == .FiveMin ? conversionResultDateComponents.minute : conversionResultDateComponents.hour
         
         return formattedTime
     }

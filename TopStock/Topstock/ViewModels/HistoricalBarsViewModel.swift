@@ -11,20 +11,24 @@ final class HistoricalBarsViewModel {
     var candlesticks = [GraphableCandleStick]()
     var errorMessage: String?
     private let networking: TopStockAPI
-    private let timeFrame: GlobalVars.Text.TimeLine
+    private let symbol: String
     
-    /// FIXME: Make time frame more dynamic. Should be bound to the picker in the detail view.
-    init(networking: TopStockAPI) {
+    init(networking: TopStockAPI,
+         for symbol: String) {
         self.networking = networking
-        self.timeFrame = .oneHourPeriod
+        self.symbol = symbol
     }
     
     /// FIXME: Get this per day with some pagination after implementing scrolling chart.
-    func getHistoricalBars() async {
+    func getHistoricalBars(for timeFrame: SnapshotPeriod) async {
+        /** FIXME: This is a limitation of the "free" subscription level of the Alpaca endpoint. Cannot get today's candlesticks as historical data. Explore subscription pricing.*/
+        let latestAvailableDataDate = Utilities.yesterdaysUTCDate()
+        let timeFrameValue: TopStockAPIEndpoint.HistoricalBarTimeFrame = timeFrame == .fiveMin ? .FiveMin : .OneHour
         do {
-            let historicalBars: HistoricalBars = try await self.networking.retrieveData(for: .historicalBars("AAPL", .OneHour, "2026-02-26T00:00:00Z"))
+            let historicalBars: HistoricalBars = try await self.networking.retrieveData(for: .historicalBars(self.symbol, timeFrameValue, latestAvailableDataDate))
             
-            let _ =  self.updateChartView(with:  historicalBars)
+            let _ =  self.updateChartView(with:  historicalBars,
+                                          for: timeFrameValue)
         } catch(let error) {
             guard let errorValue = error as? APIError else { return }
             
@@ -41,11 +45,11 @@ final class HistoricalBarsViewModel {
         }
     }
     
-    private func updateChartView(with historicalBars: HistoricalBars) {
+    private func updateChartView(with historicalBars: HistoricalBars,
+                                 for timeFrame: TopStockAPIEndpoint.HistoricalBarTimeFrame) {
         Task { @MainActor in
             let candlesticks: [GraphableCandleStick] = historicalBars.bars.compactMap { candlestick -> GraphableCandleStick? in
-                guard let dateTime = candlestick.timestamp,
-                        let timeFrameValue = Utilities.formattedTime(for: candlestick.timestamp, timeFrame: timeFrame) else {
+                guard let timeFrameValue = Utilities.formattedTime(for: candlestick.timestamp, timeFrame: timeFrame) else {
                     return nil
                 }
                 

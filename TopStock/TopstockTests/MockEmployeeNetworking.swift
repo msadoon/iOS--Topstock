@@ -22,4 +22,8 @@ final class MockTopStockNetworking: TopStockAPI {
             throw apiError
         }
     }
+    
+    func pathURL(for path: Topstock.TopStockAPIEndpoint) -> URL? {
+        nil
+    }
 }

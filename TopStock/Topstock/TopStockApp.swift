@@ -2,14 +2,15 @@ import SwiftUI
 
 @main
 struct TopStockApp: App {
-    @State private var moversViewModel = MoversListViewModel(networking: TopStockNetworking.shared)
-    @State private var historicalBarsViewModel = HistoricalBarsViewModel(networking: TopStockNetworking.shared)
+    private let topstockAPI: TopStockAPI
+    
+    init() {
+        self.topstockAPI = TopStockNetworking.shared
+    }
     
     var body: some Scene {
         WindowGroup {
-            MoversListView()
-                .environment(self.moversViewModel)
-                .environment(self.historicalBarsViewModel)
+            MoversListView(networking: self.topstockAPI)
                 .preferredColorScheme(.dark)
         }
     }

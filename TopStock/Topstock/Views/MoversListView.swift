@@ -6,25 +6,30 @@ fileprivate enum SectionType {
 }
 
 struct MoversListView: View {
-    @Environment(MoversListViewModel.self) private var moversListViewModel
     @State private var showAlert: (flag: Bool, msg: String?) = (false, nil)
     @State private var geometry = CGRect.zero
     @State private var showSecurityDetails = false
     @State private var selectedSecurity: Security?
-    
+    private var viewModel: MoversListViewModel
+    private let networking: TopStockAPI
     private let columns = [GridItem(.flexible()), GridItem(.flexible())]
+    
+    init(networking: TopStockAPI) {
+        self.networking = networking
+        self.viewModel = MoversListViewModel(networking: networking)
+    }
     
     var body: some View {
         NavigationStack {
             VStack {
                 ScrollView {
-                    section(for: self.moversListViewModel.gainers,
+                    section(for: self.viewModel.gainers,
                             in: self.columns,
                             with: self.geometry,
                             type: .gainers,
                             selectedSecurity: $selectedSecurity)
                     
-                    section(for: self.moversListViewModel.losers,
+                    section(for: self.viewModel.losers,
                             in: self.columns,
                             with: self.geometry,
                             type: .losers,
@@ -34,7 +39,7 @@ struct MoversListView: View {
             }
             .navigationTitle(GlobalVars.Brand.title.rawValue)
             .navigationBarTitleDisplayMode(.inline)
-            .onChange(of: self.moversListViewModel.errorMessage) { _, newMessage in
+            .onChange(of: self.viewModel.errorMessage) { _, newMessage in
                 guard let messageValue = newMessage else { return }
                 
                 self.showAlert = (true, messageValue)
@@ -48,7 +53,7 @@ struct MoversListView: View {
             }
             .onAppear {
                 Task { @MainActor
-                    let _ = await self.moversListViewModel.getMoversList()
+                    let _ = await self.viewModel.getMoversList()
                 }
             }
             .onChange(of: self.selectedSecurity) { _, newValue in
@@ -61,7 +66,7 @@ struct MoversListView: View {
             }
             .sheet(isPresented: self.$showSecurityDetails, onDismiss: { self.selectedSecurity = nil }) {
                 if let availableSecurity = self.selectedSecurity {
-                    SecurityDetailsView(security: availableSecurity)
+                    SecurityDetailsView(networking: self.networking, security: availableSecurity)
                         .presentationDetents([.medium])
                 }
             }

@@ -1,28 +1,18 @@
 import SwiftUI
 
-fileprivate enum SnapshotPeriod: String, CaseIterable {
-    case fiveMin
-    case oneHour
-    
-    var description: String {
-        switch self {
-        case .fiveMin:
-            GlobalVars.Text.TimeLine.fiveMinPeriod.rawValue
-        case .oneHour:
-            GlobalVars.Text.TimeLine.oneHourPeriod.rawValue
-        }
-    }
-}
-
 struct SecurityDetailsView: View {
     @State private var selectedSnapshot: SnapshotPeriod = .fiveMin
     private var security: Security
     private var logoURL: URL? {
         let endpoint = TopStockAPIEndpoint.logos(self.security.symbol)
-        return TopStockNetworking.shared.pathURL(for: endpoint)
+        return self.networking.pathURL(for: endpoint)
     }
     
-    init(security: Security) {
+    private let networking: TopStockAPI
+    
+    init(networking: TopStockAPI,
+         security: Security) {
+        self.networking = networking
         self.security = security
     }
     
@@ -46,26 +36,19 @@ struct SecurityDetailsView: View {
                         .font(.callout)
                 }
             }
-            /**
-                Text(availableSecurity.ticker)
-                    .font(.title3)
-                Text(availableSecurity.exchange.rawValue)
-                    .font(.body)
-                Text(GlobalVars.Text.dateAdded.rawValue + (availableSecurity.dateAdded?.formatted(date: .abbreviated, time: .omitted) ?? ""))
-                    .font(.callout)
-                // FIXME: In production, this would be mapped to the snapshot periods for the security.
-             */
-                Picker(selection: self.$selectedSnapshot) {
-                    ForEach(SnapshotPeriod.allCases, id: \.self) { option in
-                        Text(option.description)
-                    }
-                } label: {
-                    Text(GlobalVars.Text.TimeLine.timePeriod)
+            Picker(selection: self.$selectedSnapshot) {
+                ForEach(SnapshotPeriod.allCases, id: \.self) { option in
+                    Text(option.description)
                 }
-                .pickerStyle(.segmented)
-                .padding()
+            } label: {
+                Text(GlobalVars.Text.TimeLine.timePeriod)
+            }
+            .pickerStyle(.segmented)
+            .padding()
             
-            TimeLineChartView()
+            TimeLineChartView(networking: self.networking,
+                              for: self.security.symbol,
+                              in: $selectedSnapshot)
         }
         .padding()
     }

@@ -1,3 +1,5 @@
+import Foundation
+
 enum TopStockAPIEndpoint {
     static let baseEndpoint = "https://api.topstockdev.ca"
     
@@ -43,4 +45,5 @@ enum TopStockAPIEndpoint {
 
 protocol TopStockAPI: Sendable {
     func retrieveData<T: Decodable>(for: TopStockAPIEndpoint) async throws -> T
+    func pathURL(for path: TopStockAPIEndpoint) -> URL?
 }
