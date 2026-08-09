@@ -65,18 +65,12 @@ struct UtilitiesTests {
         #expect(dateText == UtilitiesTests.thursdayDate)
     }
     
-    @Test("Ensure time frames for date are returned.", arguments: [(UtilitiesTests.fridayDate, TopStockAPIEndpoint.HistoricalBarTimeFrame.FiveMin), (UtilitiesTests.fridayDate, TopStockAPIEndpoint.HistoricalBarTimeFrame.OneHour)])
-    func timeFrames(from dateValue: String,
-                    for timeFrame: TopStockAPIEndpoint.HistoricalBarTimeFrame) async throws {
+    @Test("Ensure time frames for date are returned.", arguments: [UtilitiesTests.fridayDate])
+    func timeFrames(from dateValue: String) async throws {
         let submittedUTCDate = try #require(await Utilities.validUTCDate(from: dateValue))
-        let timeFrameText = await Utilities.formattedTime(for: submittedUTCDate,
-                                                          timeFrame: timeFrame)
+        let timeFrameText = await Utilities.formattedTime(for: submittedUTCDate)
         
-        switch timeFrame {
-        case .FiveMin:
-            #expect(timeFrameText == 43)
-        case .OneHour:
-            #expect(timeFrameText == 17)
-        }
+        #expect(timeFrameText.first?.key == 17)
+        #expect(timeFrameText.first?.value == 43)
     }
 }

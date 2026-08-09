@@ -1,9 +1,15 @@
 import SwiftUI
 
 struct GraphableCandleStick: Identifiable {
-    var id: String
-    var time: Int
-    var closePrice: Float
+    let id: String
+    let hour: Int
+    let minute: Int
+    /** FIXME: There will be more data here for the candle stick. */
+    let closePrice: Float
+    
+    var descriptionOfTime: String {
+        "\(self.hour): \(self.minute)"
+    }
 }
 
 @MainActor @Observable
@@ -27,8 +33,7 @@ final class HistoricalBarsViewModel {
         do {
             let historicalBars: HistoricalBars = try await self.networking.retrieveData(for: .historicalBars(self.symbol, timeFrameValue, latestAvailableDataDate))
             
-            let _ =  self.updateChartView(with:  historicalBars,
-                                          for: timeFrameValue)
+            let _ =  self.updateChartView(with:  historicalBars)
         } catch(let error) {
             guard let errorValue = error as? APIError else { return }
             
@@ -45,16 +50,18 @@ final class HistoricalBarsViewModel {
         }
     }
     
-    private func updateChartView(with historicalBars: HistoricalBars,
-                                 for timeFrame: TopStockAPIEndpoint.HistoricalBarTimeFrame) {
+    private func updateChartView(with historicalBars: HistoricalBars) {
         Task { @MainActor in
             let candlesticks: [GraphableCandleStick] = historicalBars.bars.compactMap { candlestick -> GraphableCandleStick? in
-                guard let timeFrameValue = Utilities.formattedTime(for: candlestick.timestamp, timeFrame: timeFrame) else {
+                let hourAndMinute = Utilities.formattedTime(for: candlestick.timestamp)
+                guard let hour = hourAndMinute.first?.key,
+                      let minute = hourAndMinute.first?.value else {
                     return nil
                 }
                 
-                return GraphableCandleStick(id: "\(timeFrameValue)",
-                                            time: timeFrameValue,
+                return GraphableCandleStick(id: historicalBars.symbol + "\(hour)\(minute)",
+                                            hour: hour,
+                                            minute: minute,
                                             closePrice: candlestick.closePrice)
             }
             

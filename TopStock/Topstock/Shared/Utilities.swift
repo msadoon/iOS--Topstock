@@ -63,17 +63,18 @@ struct Utilities {
         String(format: GlobalVars.Text.percentChange.rawValue, Int(security.percentChange))
     }
     
-    static func formattedTime(for date: Date?, timeFrame: TopStockAPIEndpoint.HistoricalBarTimeFrame) -> Int? {
+    static func formattedTime(for date: Date?) -> [Int: Int] {
         guard let dateValue = date else {
-            return nil
+            return [:]
         }
         
-        let calendarTimeFrame: Calendar.Component = timeFrame == .FiveMin ? .minute : .hour
+        let hourAndMinute = Utilities.utcCalendar.dateComponents([.hour, .minute], from: dateValue)
         
-        let conversionResultDateComponents = Utilities.utcCalendar.dateComponents([calendarTimeFrame], from: dateValue)
-
-        let formattedTime = timeFrame == .FiveMin ? conversionResultDateComponents.minute : conversionResultDateComponents.hour
+        guard let hour = hourAndMinute.hour,
+              let minute = hourAndMinute.minute else {
+            return [:]
+        }
         
-        return formattedTime
+        return [hour: minute]
     }
 }

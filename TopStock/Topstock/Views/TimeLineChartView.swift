@@ -25,8 +25,8 @@ struct TimeLineChartView: View {
     var body: some View {
         VStack(alignment: .center) {
             Chart(self.historicalBarsViewModel.candlesticks) { candlestick in
-                    PointMark(x:
-                            .value(self.pointMarkXTitle, candlestick.time),
+                    LineMark(x:
+                            .value(self.pointMarkXTitle, candlestick.descriptionOfTime),
                               y:
                             .value(self.pointMarkYTitle, candlestick.closePrice))
             }
