@@ -20,12 +20,26 @@ struct Utilities {
         return utcCalendar
     }
     
-    /** FIXME:  Testable */
-    static func yesterdaysUTCDate() -> String {
-        let todaysDate = Date.now
+    static private func isWeekday(for date: Date) -> Bool {
+        guard let weekdayNumber = Utilities.utcCalendar.dateComponents([.weekday],
+                                                                       from: date).weekday else {
+            return false
+        }
         
-        guard let yesterdaysDate = Utilities.utcCalendar.date(byAdding: .day, value: -1, to: todaysDate, wrappingComponents: false) else {
+        return ![1,7].contains(weekdayNumber)
+    }
+    
+    static func lastWeekDay(from date: Date) -> String {
+        guard var yesterdaysDate = Utilities.utcCalendar.date(byAdding: .day, value: -1, to: date, wrappingComponents: false) else {
             return ""
+        }
+        
+        if !isWeekday(for: yesterdaysDate) {
+            repeat {
+                if let anotherPossibleWeekday = Utilities.utcCalendar.date(byAdding: .day, value: -1, to: yesterdaysDate, wrappingComponents: false) {
+                    yesterdaysDate = anotherPossibleWeekday
+                }
+            } while !isWeekday(for: yesterdaysDate)
         }
         
         return Utilities.utcDateFormatter.string(from: yesterdaysDate)
@@ -49,7 +63,6 @@ struct Utilities {
         String(format: GlobalVars.Text.percentChange.rawValue, Int(security.percentChange))
     }
     
-    /** FIXME:  Testable */
     static func formattedTime(for date: Date?, timeFrame: TopStockAPIEndpoint.HistoricalBarTimeFrame) -> Int? {
         guard let dateValue = date else {
             return nil
@@ -57,7 +70,7 @@ struct Utilities {
         
         let calendarTimeFrame: Calendar.Component = timeFrame == .FiveMin ? .minute : .hour
         
-        let conversionResultDateComponents = Calendar.current.dateComponents([calendarTimeFrame], from: dateValue)
+        let conversionResultDateComponents = Utilities.utcCalendar.dateComponents([calendarTimeFrame], from: dateValue)
 
         let formattedTime = timeFrame == .FiveMin ? conversionResultDateComponents.minute : conversionResultDateComponents.hour
         

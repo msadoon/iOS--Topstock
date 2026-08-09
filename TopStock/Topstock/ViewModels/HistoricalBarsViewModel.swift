@@ -22,7 +22,7 @@ final class HistoricalBarsViewModel {
     /// FIXME: Get this per day with some pagination after implementing scrolling chart.
     func getHistoricalBars(for timeFrame: SnapshotPeriod) async {
         /** FIXME: This is a limitation of the "free" subscription level of the Alpaca endpoint. Cannot get today's candlesticks as historical data. Explore subscription pricing.*/
-        let latestAvailableDataDate = Utilities.yesterdaysUTCDate()
+        let latestAvailableDataDate = Utilities.lastWeekDay(from: .now)
         let timeFrameValue: TopStockAPIEndpoint.HistoricalBarTimeFrame = timeFrame == .fiveMin ? .FiveMin : .OneHour
         do {
             let historicalBars: HistoricalBars = try await self.networking.retrieveData(for: .historicalBars(self.symbol, timeFrameValue, latestAvailableDataDate))

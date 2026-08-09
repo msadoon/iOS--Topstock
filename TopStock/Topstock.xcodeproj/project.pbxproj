@@ -24,6 +24,7 @@
 		707CEB63301D8DC0005D2E88 /* Topstock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Topstock.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		707CEB70301D8DC1005D2E88 /* TopstockTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TopstockTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		707CECA7301D9BEE005D2E88 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = SOURCE_ROOT; };
+		709DD9D33028F32300883BE6 /* TopstockTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = TopstockTests.xctestplan; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -62,6 +63,7 @@
 			children = (
 				707CECA7301D9BEE005D2E88 /* README.md */,
 				707CEB65301D8DC0005D2E88 /* Topstock */,
+				709DD9D33028F32300883BE6 /* TopstockTests.xctestplan */,
 				707CEB73301D8DC1005D2E88 /* TopstockTests */,
 				707CEB64301D8DC0005D2E88 /* Products */,
 			);

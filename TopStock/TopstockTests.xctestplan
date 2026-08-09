@@ -1,0 +1,25 @@
+{
+  "configurations" : [
+    {
+      "id" : "1009A48F-1AF1-45FD-81DE-9AD708007C58",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "performanceAntipatternCheckerEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:Topstock.xcodeproj",
+        "identifier" : "707CEB6F301D8DC1005D2E88",
+        "name" : "TopstockTests"
+      }
+    }
+  ],
+  "version" : 1
+}
