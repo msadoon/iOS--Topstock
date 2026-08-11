@@ -47,7 +47,7 @@ struct SecurityDetailsView: View {
             .padding()
             
             TimeLineChartView(networking: self.networking,
-                              for: self.security.symbol,
+                              for: self.security,
                               in: $selectedSnapshot)
         }
         .padding()

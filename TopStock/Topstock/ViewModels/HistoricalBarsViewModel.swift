@@ -1,15 +1,9 @@
 import SwiftUI
 
-struct GraphableCandleStick: Identifiable {
-    let id: String
-    let hour: Int
-    let minute: Int
+struct GraphableCandleStick {
+    let timestamp: Date
     /** FIXME: There will be more data here for the candle stick. */
     let closePrice: Float
-    
-    var descriptionOfTime: String {
-        "\(self.hour): \(self.minute)"
-    }
 }
 
 @MainActor @Observable
@@ -53,15 +47,11 @@ final class HistoricalBarsViewModel {
     private func updateChartView(with historicalBars: HistoricalBars) {
         Task { @MainActor in
             let candlesticks: [GraphableCandleStick] = historicalBars.bars.compactMap { candlestick -> GraphableCandleStick? in
-                let hourAndMinute = Utilities.formattedTime(for: candlestick.timestamp)
-                guard let hour = hourAndMinute.first?.key,
-                      let minute = hourAndMinute.first?.value else {
+                guard let availableTimestamp =  Utilities.validedUTCDate(from: candlestick.timestamp)  else {
                     return nil
                 }
                 
-                return GraphableCandleStick(id: historicalBars.symbol + "\(hour)\(minute)",
-                                            hour: hour,
-                                            minute: minute,
+                return GraphableCandleStick(timestamp: availableTimestamp,
                                             closePrice: candlestick.closePrice)
             }
             

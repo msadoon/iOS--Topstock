@@ -67,7 +67,7 @@ struct MoversListView: View {
             .sheet(isPresented: self.$showSecurityDetails, onDismiss: { self.selectedSecurity = nil }) {
                 if let availableSecurity = self.selectedSecurity {
                     SecurityDetailsView(networking: self.networking, security: availableSecurity)
-                        .presentationDetents([.medium])
+                        .presentationDetents([.large])
                 }
             }
         }

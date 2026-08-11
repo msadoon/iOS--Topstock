@@ -53,6 +53,20 @@ struct Utilities {
         return date
     }
     
+    /** FIXME: testable **/
+    static func validedUTCDate(from date: Date?) -> Date? {
+        guard let originalDate = date else { return nil
+        }
+        
+        let utcTextDateValue =  Utilities.utcDateFormatter.string(from: originalDate)
+        
+        guard let utcDate = Utilities.utcDateFormatter.date(from: utcTextDateValue) else {
+            return nil
+        }
+        
+        return utcDate
+    }
+    
     static func formattedDollarChange(for security: Security) -> String {
         String(format: GlobalVars.Text.dollarChange.rawValue, security.change
                 .formatted(.number
@@ -63,6 +77,7 @@ struct Utilities {
         String(format: GlobalVars.Text.percentChange.rawValue, Int(security.percentChange))
     }
     
+    /** FIXME: Needed? */
     static func formattedTime(for date: Date?) -> [Int: Int] {
         guard let dateValue = date else {
             return [:]

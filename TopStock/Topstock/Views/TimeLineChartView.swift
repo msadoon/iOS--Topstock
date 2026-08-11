@@ -12,31 +12,81 @@ struct TimeLineChartView: View {
         GlobalVars.HistoricalBars.AxisTitles.value.rawValue.localizedUppercase
     }
     
+    private var gainerGraph: Bool
     @Binding private var timeFrame: SnapshotPeriod
     
     init(networking: TopStockAPI,
-         for symbol: String,
+         for security: Security,
          in timeFrame: Binding<SnapshotPeriod>) {
         self.historicalBarsViewModel = HistoricalBarsViewModel(networking: networking,
-                                                               for: symbol)
+                                                               for: security.symbol)
         self._timeFrame = timeFrame
+        self.gainerGraph = security.percentChange >= 0
     }
     
     var body: some View {
         VStack(alignment: .center) {
-            Chart(self.historicalBarsViewModel.candlesticks) { candlestick in
+            Chart(self.historicalBarsViewModel.candlesticks, id: \.timestamp) { candlestick in
                     LineMark(x:
-                            .value(self.pointMarkXTitle, candlestick.descriptionOfTime),
+                            .value(self.pointMarkXTitle, candlestick.timestamp),
                               y:
                             .value(self.pointMarkYTitle, candlestick.closePrice))
+                   .foregroundStyle(self.gainerGraph ? .green : .red)
+            }
+            .chartScrollableAxes(.horizontal)
+            .overlay(alignment: .topLeading) {
+                Text("USD")
+                    .bold()
+                    .padding(.top, 4)
+                    .padding(.leading, 8)
+                    .allowsHitTesting(false)
             }
             .chartYAxis {
-                AxisMarks(position: .leading)
+                AxisMarks { value in
+                    AxisGridLine()
+                    AxisTick()
+                    AxisValueLabel {
+                        if let number = value.as(Double.self) {
+                          Text(number, format: .number.precision(.fractionLength(0)))
+                        }
+                    }
+                }
             }
-            .chartXAxisLabel(GlobalVars.HistoricalBars.AxisTitles.timeFrame.rawValue.localizedUppercase)
-            .chartYAxisLabel(GlobalVars.HistoricalBars.AxisTitles.value.rawValue.localizedUppercase)
+            .chartXAxis {
+                AxisMarks(values: .stride(by: .hour, count: 1)) { value in
+                    if let date = value.as(Date.self) {
+                        let hour = Calendar.autoupdatingCurrent.component(.hour, from: date)
+                        AxisValueLabel(collisionResolution: .disabled, offsetsMarks: true) {
+                            VStack(alignment: .leading, spacing: 0) {
+                                switch (value.index, hour) {
+                                case (_, 12):
+                                    Text(date, format:  .dateTime.hour())
+                                case (0, _):
+                                    Text(date, format:  .dateTime.hour())
+                                    
+                                    Text(date, format: .dateTime.month().day())
+                                default:
+                                    Text(date, format:  .dateTime.hour(.defaultDigits(amPM: .omitted)))
+                                }
+                            }
+                            .fixedSize(horizontal: true, vertical: false)
+                            .lineLimit(nil)
+                            .minimumScaleFactor(0.8)
+                        }
+                        
+                        if value.index == 0 {
+                            AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5))
+                            AxisTick(stroke: StrokeStyle(lineWidth: 0.5))
+                        } else {
+                            AxisGridLine()
+                            AxisTick()
+                        }
+                    }
+                }
+            }
             .bold()
             .aspectRatio(1, contentMode: .fit)
+            
         }
         .padding()
         .background(
@@ -57,3 +107,4 @@ struct TimeLineChartView: View {
         }
     }
 }
+

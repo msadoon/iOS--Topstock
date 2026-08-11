@@ -7,23 +7,17 @@
 ## Features Todo
 
 **General UI/UX**
-- [x] Design the app layout for the market movers and historical bars.
-- [x] Implement list view UI/UX.
-- [x] Implement detail view UI/UX. (Update the header to be more informative.)
-
-*bugs*
-- [x] Fix display issues on list view
-- [x] Ensure list view loads for iOS 18.4+ on first install (including images).
 - [ ] Put it logos for data providers (alpaca, logos.dev - link to them).
-- [x] Clean up cell spacing for list view.
-- [x] First tap on security shows an empty modal - fix.
+- [x] Ensure graph is shown completely when modal first appears.
 
 **Historical Bars**
-- [ ] This is complicated UI. Scrollable candle stick bars for each day. May require paging on the backend. SwiftCharts.
+- [x] Ensure graph is scrollable (dates/times are shown correctly while scrolling)
+- [ ] Animate graph changes between time frames.
+- [x] X-axis should contain date, times should be clock-based, Y-axis in $USD, Improve graph grid lines.
+- [ ] Paging while scrolling. (Think more about this.)
 
-**Networking**
-- [x] Setup networking to hit all endpoints.
-- [x] Test networking.
+**Data**
+- [ ] Logos and historical bar data should be cached and retrieval from cache before hitting the network.
 
 **Deployment**
 - [ ] Setup Fastlane. 
@@ -31,5 +25,5 @@
 **Authentication**
 - [ ] Work on after all other features. Configure with JWT authentication on the server.
 
-**Security**
-- [x] Ensure HTTPS is being used. Ie. no arbitrary loads.
+**Bugs**
+- [ ] Look into overlays for the date, ticker symbol and currency displays.

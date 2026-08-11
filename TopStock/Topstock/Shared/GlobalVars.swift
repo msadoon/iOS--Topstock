@@ -26,7 +26,7 @@ struct GlobalVars {
     public struct HistoricalBars {
         public enum AxisTitles: String {
             case timeFrame = "Timeframe"
-            case value = "Value"
+            case value = "USD"
         }
     }
     
