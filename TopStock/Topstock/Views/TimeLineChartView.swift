@@ -34,20 +34,13 @@ struct TimeLineChartView: View {
                    .foregroundStyle(self.gainerGraph ? .green : .red)
             }
             .chartScrollableAxes(.horizontal)
-            .overlay(alignment: .topLeading) {
-                Text("USD")
-                    .bold()
-                    .padding(.top, 4)
-                    .padding(.leading, 8)
-                    .allowsHitTesting(false)
-            }
             .chartYAxis {
                 AxisMarks { value in
                     AxisGridLine()
                     AxisTick()
                     AxisValueLabel {
                         if let number = value.as(Double.self) {
-                          Text(number, format: .number.precision(.fractionLength(0)))
+                            Text("$US ") + Text(number, format: .number.precision(.fractionLength(2)))
                         }
                     }
                 }

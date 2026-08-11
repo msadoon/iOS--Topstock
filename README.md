@@ -8,12 +8,11 @@
 
 **General UI/UX**
 - [ ] Put it logos for data providers (alpaca, logos.dev - link to them).
-- [x] Ensure graph is shown completely when modal first appears.
 
 **Historical Bars**
-- [x] Ensure graph is scrollable (dates/times are shown correctly while scrolling)
+- [ ] Add annotations to each mark on the chart so a candlestick can be drawn as a pop-up.
+- [ ] Historical bars supports todays date just fifteen minutes back, make the change to pull in the last available days data, displaying it, then paging backward. No need for latest bars, until we can incorporate it without gaps in the timeline.
 - [ ] Animate graph changes between time frames.
-- [x] X-axis should contain date, times should be clock-based, Y-axis in $USD, Improve graph grid lines.
 - [ ] Paging while scrolling. (Think more about this.)
 
 **Data**
